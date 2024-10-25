@@ -1,25 +1,22 @@
 workflows:
   build-pwa:
-    name: "Build and Deploy PWA"
+    name: "Build PWA"
     environment:
-      flutter: stable # أو يمكنك تحديد نسخة Flutter معينة
-      node: 14.17.0 # إصدار Node.js
-      xcode: latest # إذا كنت تبني تطبيق iOS
+      node: 14.17.0 # تأكد من استخدام إصدار Node.js المناسب
     scripts:
       - name: Install dependencies
         script: |
-          flutter pub get
-          npm install
+          npm install # تثبيت التبعيات باستخدام npm
       - name: Build PWA
         script: |
-          flutter build web --release # إذا كنت تستخدم Flutter لإنشاء PWA
+          npm run build # بناء تطبيق PWA الخاص بك
       - name: Deploy to Firebase Hosting
         script: |
           npm install -g firebase-tools
-          firebase deploy --only hosting --token $FIREBASE_TOKEN # تحتاج لإعداد token خاص بـ Firebase
-
+          firebase deploy --only hosting --token $FIREBASE_TOKEN # تحتاج إلى إعداد token خاص بـ Firebase
+          
     artifacts:
-      - build/web/ # يحدد المخرجات التي سيتم رفعها (اختياري)
+      - build/** # تحديد المخرجات التي سيتم رفعها (إذا كان لديك مجلد بناء)
 
     publishing:
       email:
